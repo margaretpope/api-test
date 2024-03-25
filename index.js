@@ -17,7 +17,7 @@ form.onsubmit = async function(e) {
         console.log(recipeData)
         renderRecipe(recipeData)
     } catch (err) {
-        recipeSec.innerHTML = err.message
+        recipeSection.innerHTML = err.message
     }
 }
 
