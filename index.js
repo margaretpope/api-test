@@ -1,36 +1,40 @@
 const form = document.querySelector('form')
-const recipeSection = document.getElementById('recipe')
+const exerciseSection = document.getElementById('exercise')
 
 form.onsubmit = async function(e) {
     e.preventDefault()
     const userSearch = form.search.value.trim()
     localStorage.setItem('userSearch', userSearch)
-    recipeSection.innerHTML = ''
+    exerciseSection.innerHTML = ''
     this.search.value = ''
     try {
-        const res = await fetch(`https://api.api-ninjas.com/v1/recipe?query=${userSearch}`, {
-            headers: { 'X-Api-Key': 'OZQk/6ir9ftXppmlpBoUOg==QVzAM3ILCSMgMnNz'}
+        const res = await fetch(`https://api.api-ninjas.com/v1/exercises?muscle=${userSearch}`, {
+            headers: { 'X-Api-Key': 'K9uVhoHgQabLFXZg9xnvEw==HY6NE69guV75NOxH'}
         })
-        if (res.status === 404) throw new Error('Recipe not found.')
-        if (res.status === 400) throw new Error('Please search for a recipe.')
-        const recipeData = await res.json()
-        console.log(recipeData)
-        renderRecipe(recipeData)
+        if (res.status === 404) throw new Error('Exercise not found.')
+        if (res.status === 400) throw new Error('Please search for a exercise.')
+        const exerciseData = await res.json()
+        console.log(exerciseData)
+        renderExercise(exerciseData)
     } catch (err) {
-        recipeSection.innerHTML = err.message
+        exerciseSection.innerHTML = err.message
     }
 }
 
-const renderRecipe = ({
+const renderExercise = ({
     0: {
-        ingredients,
-        instructions,
-        servings,
-        title
+        name,
+        type,
+        muscle,
+        equipment,
+        difficulty,
+        instructions
     }    
 }) => {
-    recipeSection.innerHTML = `<h3>${title}</h3>
-    <p>Servings: ${servings}</p>
-    <p>Ingredients: ${ingredients}</p>
+    exerciseSection.innerHTML = `<h3>${name}</h3>
+    <p>Type: ${type}</p>
+    <p>Muscle: ${muscle}</p>
+    <p>Equipment: ${equipment}</p>
+    <p>Difficulty: ${difficulty}</p>
     <p>Instructions: ${instructions}</p>`
 }
